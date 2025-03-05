@@ -1,4 +1,4 @@
-# PrimeK-Net: Multi-scale Spectral Learning via Group Prime-Kernel Convolutional Neural Networks for Single Channel Speech Enhancement
+# PrimeK-Net: Multi-scale Spectral Learning via Group Prime-Kernel Convolutional Neural Networks for Single Channel Speech Enhancement (Accepeted at ICASSP 2025)
 ### Zizhen Lin, Junyu Wang, Ruili Li, Fei Shen, Xi Xuan
 In our [paper](https://arxiv.org/abs/2502.19906), we proposed PrimeK-Net.
 
