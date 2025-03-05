@@ -37,7 +37,6 @@ Then replace the test.txt and training.txt with generated files in folder ./Voic
 python inference_and_cal_metric.py --checkpoint_file=/path/g_xxxx
 
 ```
-tric.py --checkpoint_file=/media/lz-4060ti-linux/SE/SE/ICASSP2025/Prime-K/ckpt/g_best
 
 You can also use the pretrained best checkpoint file we provide in `ckpt/g_best`.<br>
 Generated wav files are saved in `generated_files` by default.<br>
