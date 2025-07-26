@@ -3,6 +3,7 @@ import random
 import torch
 import torch.utils.data
 import librosa
+from pcs400 import cal_pcs
 
 def mag_pha_stft(y, n_fft, hop_size, win_size, compress_factor=1.0, center=True, addeps=True):
 
@@ -71,8 +72,8 @@ class Val_Dataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         filename = self.audio_indexes[index]
         if self._cache_ref_count == 0:
-            clean_audio, _ = librosa.load(os.path.join(self.clean_wavs_dir, filename + '.wav'), self.sampling_rate)
-            noisy_audio, _ = librosa.load(os.path.join(self.noisy_wavs_dir, filename + '.wav'), self.sampling_rate)
+            clean_audio, _ = librosa.load(os.path.join(self.clean_wavs_dir, filename + '.wav'), sr=self.sampling_rate)
+            noisy_audio, _ = librosa.load(os.path.join(self.noisy_wavs_dir, filename + '.wav'), sr=self.sampling_rate)
             self.cached_clean_wav = clean_audio
             self.cached_noisy_wav = noisy_audio
             self._cache_ref_count = self.n_cache_reuse
@@ -123,7 +124,7 @@ class Val_Dataset(torch.utils.data.Dataset):
 
 class Dataset(torch.utils.data.Dataset):
     def __init__(self, training_indexes, clean_wavs_dir, noisy_wavs_dir, segment_size, n_fft, hop_size, win_size, 
-                sampling_rate, compress_factor, split=True, shuffle=True, n_cache_reuse=1, device=None):
+                sampling_rate, compress_factor, split=True, shuffle=True, n_cache_reuse=1, pcs=False, device=None):
         self.audio_indexes = training_indexes
         random.seed(1234)
         if shuffle:
@@ -142,12 +143,13 @@ class Dataset(torch.utils.data.Dataset):
         self.n_cache_reuse = n_cache_reuse
         self._cache_ref_count = 0
         self.device = device
+        self.pcs = pcs
 
     def __getitem__(self, index):
         filename = self.audio_indexes[index]
         if self._cache_ref_count == 0:
-            clean_audio, _ = librosa.load(os.path.join(self.clean_wavs_dir, filename + '.wav'), self.sampling_rate)
-            noisy_audio, _ = librosa.load(os.path.join(self.noisy_wavs_dir, filename + '.wav'), self.sampling_rate)
+            clean_audio, _ = librosa.load(os.path.join(self.clean_wavs_dir, filename + '.wav'), sr=self.sampling_rate)
+            noisy_audio, _ = librosa.load(os.path.join(self.noisy_wavs_dir, filename + '.wav'), sr=self.sampling_rate)
             self.cached_clean_wav = clean_audio
             self.cached_noisy_wav = noisy_audio
             self._cache_ref_count = self.n_cache_reuse
@@ -156,6 +158,9 @@ class Dataset(torch.utils.data.Dataset):
             noisy_audio = self.cached_noisy_wav
             self._cache_ref_count -= 1
         
+        if self.pcs:
+            clean_audio = cal_pcs(clean_audio)
+
         clean_audio, noisy_audio = torch.FloatTensor(clean_audio), torch.FloatTensor(noisy_audio)
         norm_factor = torch.sqrt(len(noisy_audio) / torch.sum(noisy_audio ** 2.0))
         clean_audio = (clean_audio * norm_factor).unsqueeze(0)
