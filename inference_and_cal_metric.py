@@ -8,7 +8,7 @@ from re import S
 import torch
 import librosa
 from env import AttrDict
-from datasets.dataset import mag_pha_stft, mag_pha_istft
+from datasetsutil.dataset import mag_pha_stft, mag_pha_istft
 from models.generator import LKFCA_Net
 import soundfile as sf
 import os
@@ -75,9 +75,9 @@ def main():
     print('Initializing Inference Process..')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_clean_wavs_dir', default='/media/lz-4060ti-linux/SE/SE/VB_DEMAND_16K/clean_train')
-    parser.add_argument('--input_noisy_wavs_dir', default='/media/lz-4060ti-linux/SE/SE/VB_DEMAND_16K/noisy_train')
-    parser.add_argument('--input_test_file', default='VoiceBank+DEMAND/test.txt')
+    parser.add_argument('--input_clean_wavs_dir', default='/home/user114/yunsik/dataset/voicebankdemand/wav_clean')
+    parser.add_argument('--input_noisy_wavs_dir', default='/home/user114/yunsik/dataset/voicebankdemand/wav_noisy')
+    parser.add_argument('--input_test_file', default='/home/user114/yunsik/PrimeK-Net/VoiceBank+DEMAND/test.txt')
     parser.add_argument('--output_dir', default='generated_files/g_best')
     parser.add_argument('--checkpoint_file', required=True)
 

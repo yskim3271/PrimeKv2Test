@@ -12,7 +12,7 @@ import torch.multiprocessing as mp
 from torch.distributed import init_process_group
 from torch.nn.parallel import DistributedDataParallel
 from env import AttrDict, build_env
-from datasets.dataset import Val_Dataset, Dataset, mag_pha_stft, mag_pha_istft, get_dataset_filelist
+from datasetsutil.dataset import Val_Dataset, Dataset, mag_pha_stft, mag_pha_istft, get_dataset_filelist
 from models.generator import LKFCA_Net, pesq_score, phase_losses
 from models.discriminator import MetricDiscriminator, batch_pesq
 from utils import scan_checkpoint, load_checkpoint, save_checkpoint
@@ -340,12 +340,12 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--group_name', default=None)
-    parser.add_argument('--input_clean_wavs_dir', default='/media/lz-4060ti-linux/SE/SE/VB_DEMAND_16K/clean_train')
-    parser.add_argument('--input_noisy_wavs_dir', default='/media/lz-4060ti-linux/SE/SE/VB_DEMAND_16K/noisy_train')
-    parser.add_argument('--input_training_file', default='VoiceBank+DEMAND/training.txt')
-    parser.add_argument('--input_validation_file', default='VoiceBank+DEMAND/test.txt')
-    parser.add_argument('--checkpoint_path', default='64-4-CONMETRIC')
-    parser.add_argument('--config', default='')
+    parser.add_argument('--input_clean_wavs_dir', default='/home/user114/yunsik/dataset/voicebankdemand/wav_clean')
+    parser.add_argument('--input_noisy_wavs_dir', default='/home/user114/yunsik/dataset/voicebankdemand/wav_noisy')
+    parser.add_argument('--input_training_file', default='/home/user114/yunsik/PrimeK-Net/VoiceBank+DEMAND/training.txt')
+    parser.add_argument('--input_validation_file', default='/home/user114/yunsik/PrimeK-Net/VoiceBank+DEMAND/test.txt')
+    parser.add_argument('--checkpoint_path', default='64-4-CONMETRIC-VBDEMAND')
+    parser.add_argument('--config', default='config.json')
     parser.add_argument('--training_epochs', default=200, type=int)
     parser.add_argument('--stdout_interval', default=5, type=int)
     parser.add_argument('--checkpoint_interval', default=1000, type=int)
