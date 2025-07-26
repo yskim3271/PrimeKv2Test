@@ -17,7 +17,8 @@
     "n_fft": 400,
     "hop_size": 100,
     "win_size": 400,
-
+    "pcs": true,
+    
     "num_workers": 4,
 
     "dist_config": {

@@ -75,7 +75,7 @@ def train(rank, a, h):
 
     trainset = Dataset(training_indexes, a.input_clean_wavs_dir, a.input_noisy_wavs_dir,
                        h.segment_size, h.n_fft, h.hop_size, h.win_size, h.sampling_rate, h.compress_factor,
-                       split=True, n_cache_reuse=0, shuffle=False if h.num_gpus > 1 else True, device=device)
+                       split=True, n_cache_reuse=0, shuffle=False if h.num_gpus > 1 else True, pcs=h.pcs, device=device)
 
     train_sampler = DistributedSampler(trainset) if h.num_gpus > 1 else None
 
