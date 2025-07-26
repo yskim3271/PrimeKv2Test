@@ -13,7 +13,7 @@ from torch.distributed import init_process_group
 from torch.nn.parallel import DistributedDataParallel
 from env import AttrDict, build_env
 from datasetsutil.dataset import Val_Dataset, Dataset, mag_pha_stft, mag_pha_istft, get_dataset_filelist
-from models.generator import LKFCA_Net, pesq_score, phase_losses
+from models.primeknetv6 import PrimeKnetv6, pesq_score, phase_losses
 from models.discriminator import MetricDiscriminator, batch_pesq
 from utils import scan_checkpoint, load_checkpoint, save_checkpoint
 
@@ -28,7 +28,7 @@ def train(rank, a, h):
     torch.cuda.manual_seed(h.seed)
     device = torch.device('cuda:{:d}'.format(rank))
 
-    generator = LKFCA_Net(h).to(device)
+    generator = PrimeKnetv6(h).to(device)
     discriminator = MetricDiscriminator().to(device)
 
     if rank == 0:
